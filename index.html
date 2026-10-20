@@ -12,12 +12,64 @@
     <header class="page-header">
       <h1>The Midnight Sanctuary</h1>
       <button type="button"
-              class="add-btn">
+              class="add-btn"
+              command="show-modal"
+              commandfor="my-dialog">
         <img src="img/plus.svg"
              alt=""
              width="40">
       </button>
     </header>
+    <main class="page-content"></main>
+    <dialog id="my-dialog">
+      <div class="dialog-content">
+        <button type="button"
+                commandfor="my-dialog"
+                command="close">
+          <img src="img/plus.svg"
+               alt=""
+               width="30"
+               class="invert">
+        </button>
+        <div class="dialog-heading">
+          <h2>Add Book to Library</h2>
+        </div>
+        <form id="book-form">
+          <div>
+            <input type="text"
+                   id="author"
+                   name="author"
+                   placeholder=" "
+                   required/>
+            <label for="author">Author</label>
+          </div>
+          <div>
+            <input type="text"
+                   id="title"
+                   name="title"
+                   placeholder=" "
+                   required/>
+            <label for="title">Title</label>
+          </div>
+          <div>
+            <input type="number"
+                   id="pages"
+                   name="pages"
+                   min="1"
+                   step="1"
+                   placeholder=" "
+                   required/>
+            <label for="pages">Pages</label>
+          </div>
+        </form>
+        <button type="submit"
+                form="book-form">
+          <img src="img/plus.svg"
+                alt=""
+                width="30">
+        </button>
+      </div>
+    </dialog>
   </div>
   <div class="img-credit">
     Photo by <a href="https://unsplash.com/@alexlanting">Alex</a>
