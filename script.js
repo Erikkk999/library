@@ -1,3 +1,6 @@
+const form = document.querySelector("#book-form");
+const dialog = document.querySelector("#my-dialog");
+
 const myLibrary = [];
 
 function Book(id, author, title, pages) {
@@ -16,3 +19,18 @@ function addBookToLibrary(author, title, pages) {
   const book = new Book(id, author, title, pages);
   myLibrary.push(book);
 }
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+  
+  const author = formData.get("author");
+  const title = formData.get("title");
+  const pages = formData.get("pages");
+
+  addBookToLibrary(author, title, pages);
+
+  form.reset();
+  dialog.close();
+});
