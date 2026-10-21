@@ -115,8 +115,7 @@ button {
   justify-self: end;
 }
 
-.page-header button,
-.dialog-content button {
+.page button {
   --button-translate-y: -1.5rem;
 
   display: grid;
@@ -131,22 +130,23 @@ button {
   padding: 0.1rem;
 
   background-color: var(--secondary-color);
-  box-shadow: 0 0 10px var(--secondary-color);
+  box-shadow: 0 0 10px var(--secondary-color),
+    0 0 3px var(--darkness-color) inset;
 
   transform: translateY(var(--button-translate-y));
   transition: transform 0.4s ease,
     box-shadow 0.4s ease;
 }
 
-.page-header button:hover,
-.dialog-content button:hover {
-  box-shadow: 0 0 14px var(--secondary-color);
+.page button:hover {
+  box-shadow: 0 0 14px var(--secondary-color),
+    0 0 3px var(--darkness-color) inset;
+
   transform: translateY(var(--button-translate-y))
     scale(1.1) rotate(180deg);
 }
 
-.page-header button:focus-visible,
-.dialog-content button:focus-visible {
+.page button:focus-visible {
   outline: 2px solid var(--lightness-color);
   outline-offset: 2px;
 
@@ -154,31 +154,55 @@ button {
     scale(1.1) rotate(180deg);
 }
 
-.page-header button:active,
-.dialog-content button:active {
-  box-shadow: 0 0 10px var(--secondary-color);
+.page button:active {
+  box-shadow: 0 0 10px var(--secondary-color),
+   0 0 3px var(--darkness-color) inset;
+
   transform: translateY(var(--button-translate-y)) scale(1);
 }
 
-.page dialog {
+.page dialog,
+.book {
   width: min(27rem, calc(100% - 1rem));
   height: 36rem;
 
   border: none;
   border-radius: 2rem;
+  outline: solid 1px #ffffff10;
 
   background-color: var(--transparent-color);
-  backdrop-filter: blur(0.1rem);
+  backdrop-filter: blur(0.4rem);
 
   box-shadow: 0 0 30px var(--main-color) inset,
     0 0 30px #004f99;
 
   padding: 1.5rem;
   margin: 20vh auto;
+
+  transition: transform 1s ease,
+    background-color 1s ease,
+    box-shadow 1s ease,
+    outline 1s ease;
+}
+
+.page dialog:hover,
+.book:hover {
+  transform: scale(1.02);
+  background-color: #00000060;
+
+  outline: solid 1px #ffffff20;
+  box-shadow: 0 0 20px var(--main-color) inset,
+    0 0 50px 5px #004f99;
+
+  transition: transform 1s ease,
+    background-color 1s ease,
+    box-shadow 1s ease,
+    outline 1s ease;
 }
 
 .page dialog::backdrop {
   background-color: var(--dark-transparent-color);
+  backdrop-filter: blur(0.1rem);
 }
 
 .dialog-content {
@@ -189,14 +213,16 @@ button {
   height: 100%;
 }
 
-.dialog-content button {
+.dialog-content button,
+.book button {
   --button-translate-y: 0;
 
   width: 2rem;
   height: 2rem;
 }
 
-.dialog-content button:first-child img {
+.dialog-content button:first-child img,
+.book button:first-child img {
   transform: rotate(45deg);
 }
 
@@ -285,10 +311,16 @@ button {
 
 .dialog-content form input:focus {
   outline: solid 1px var(--secondary-color);
+  box-shadow: 0 0 14px var(--darkness-color),
+    0 0 12px var(--secondary-color) inset;
+
+  background-color: var(--darkness-color);
 }
 
 .dialog-content form input:user-invalid {
   outline: solid 1px red;
+  box-shadow: 0 0 14px var(--darkness-color),
+    0 0 12px red inset;
 }
 
 .dialog-content form input[type="number"]::-webkit-inner-spin-button,
@@ -300,6 +332,47 @@ button {
 .dialog-content form input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
+}
+
+.page-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  padding: 2rem;
+}
+
+.book {
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  align-content: space-between;
+
+  width: fit-content;
+  min-height: 20rem;
+
+  margin: 0;
+
+  background-color: #00000020;
+}
+
+.book-header {
+  display: grid;
+  place-items: center;
+}
+
+.book-header h3 {
+  font-size: 2rem;
+  color: var(--secondary-color);
+}
+
+.paragraph-container p {
+  font-size: 1.5rem;
+  color: var(--lightness-color);
+}
+
+.paragraph-container span {
+  color: var(--secondary-color);
+  font-weight: bold;
 }
 
 .img-credit {
