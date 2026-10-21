@@ -49,12 +49,23 @@ container.addEventListener("change", (e) => {
   if (!checkBox.matches(".read-status")) return;
 
   const book = checkBox.closest(".book");
+  if (!book) return;
+
   const item = myLibrary.find(item => item.id === book.dataset.id);
   const switchText = book.querySelector(".switch-text");
 
-  if (!item) return;
-
   changeReadStatus(item, switchText, checkBox);
+});
+
+container.addEventListener("click", (e) => {
+  const removeBtn = e.target.closest(".remove-btn");
+
+  if (!removeBtn) return;
+
+  const book = removeBtn.closest(".book");
+  if (!book) return;
+
+  removeBookFromLibrary(book.dataset.id);
 });
 
 function createBookElement(item) {
@@ -64,6 +75,7 @@ function createBookElement(item) {
 
   const removeBtn = document.createElement("button");
   removeBtn.type = "button";
+  removeBtn.classList.add("remove-btn");
 
   const image = document.createElement("img");
   image.src = "img/plus.svg";
@@ -131,7 +143,7 @@ function displayBook() {
 function changeReadStatus(item, switchText, checkBox) {
   switchText.classList.add("fade-out");
 
-  timeout = setTimeout(() => {
+  setTimeout(() => {
     item.setReadStatus(checkBox.checked);
 
     switchText.textContent = checkBox.checked ? "Read" : "Not read";
@@ -139,10 +151,19 @@ function changeReadStatus(item, switchText, checkBox) {
     switchText.classList.toggle("text-on", checkBox.checked);
     switchText.classList.toggle("text-off", !checkBox.checked);
 
-    timeout = setTimeout(() => {
+    setTimeout(() => {
     switchText.classList.remove("fade-out");
     }, 700);
   }, 300);
+}
+
+function removeBookFromLibrary(id) {
+  const index = myLibrary.findIndex(book => book.id === id);
+
+  if (index === -1) return;
+
+  myLibrary.splice(index, 1);
+  displayBook();
 }
 
 addBookToLibrary("V. Anton Spraul", "Think Like A Programmer", "256");
