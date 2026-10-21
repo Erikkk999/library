@@ -79,8 +79,10 @@ button {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
 
-  position: sticky;
+  position: fixed;
   top: 2rem;
+  left: 0;
+  right: 0;
   z-index: 1;
 
   height: 3rem;
@@ -171,7 +173,7 @@ button {
   outline: solid 1px #ffffff10;
 
   background-color: var(--transparent-color);
-  backdrop-filter: blur(0.4rem);
+  backdrop-filter: blur(0.1rem);
 
   box-shadow: 0 0 30px var(--main-color) inset,
     0 0 30px #004f99;
@@ -181,21 +183,24 @@ button {
 
   transition: transform 1s ease,
     background-color 1s ease,
+    backdrop-filter 1s ease,
     box-shadow 1s ease,
     outline 1s ease;
 }
 
 .page dialog:hover,
 .book:hover {
-  transform: scale(1.02);
   background-color: #00000060;
+  backdrop-filter: blur(0.4rem);
 
   outline: solid 1px #ffffff20;
   box-shadow: 0 0 20px var(--main-color) inset,
     0 0 50px 5px #004f99;
 
+  transform: scale(1.01);
   transition: transform 1s ease,
     background-color 1s ease,
+    backdrop-filter 1s ease,
     box-shadow 1s ease,
     outline 1s ease;
 }
@@ -340,15 +345,16 @@ button {
   gap: 2rem;
 
   padding: 2rem;
+  margin-top: 3rem;
 }
 
 .book {
   display: grid;
   grid-template-rows: repeat(4, auto);
-  align-content: space-between;
+  place-content: space-between;
 
   width: fit-content;
-  min-height: 20rem;
+  height: 20rem;
 
   margin: 0;
 
@@ -363,16 +369,109 @@ button {
 .book-header h3 {
   font-size: 2rem;
   color: var(--secondary-color);
+
+  transition: text-shadow 1s ease;
+}
+
+.book:hover h3,
+.book:hover .paragraph-container span {
+  text-shadow: 0 0 10px var(--secondary-color);
+  transition: text-shadow 1s ease;
 }
 
 .paragraph-container p {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: var(--lightness-color);
 }
 
 .paragraph-container span {
   color: var(--secondary-color);
   font-weight: bold;
+  transition: text-shadow 1s ease;
+}
+
+.switch {
+  display: inline-block;
+  position: relative;
+
+  width: 5.5rem;
+  height: 1.5rem;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+
+  cursor: pointer;
+  background-color: #720808bd;
+  border-radius: 5rem;
+
+  transition: background-color 1s ease 0.7s;
+}
+
+.slider .switch-text {
+  position: absolute;
+  top: 50%;
+
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  color: white;
+  opacity: 1;
+
+  z-index: 2;
+  
+  transform: translateY(-50%);
+  transition: opacity 0.4s ease;
+
+  white-space: nowrap;
+}
+
+.slider .text-off {
+  left: 1.8rem;
+}
+
+.slider .text-on {
+  left: 0.4rem;
+}
+
+.slider .switch-text.fade-out {
+  opacity: 0;
+}
+
+.slider::before {
+  position: absolute;
+  left: 1.5px;
+  bottom: 1.5px;
+
+  content: "";
+
+  height: 1.3rem;
+  width: 1.3rem;
+
+  background-color: var(--darkness-color);
+  border-radius: 50%;
+
+  transition: transform 1s;
+  z-index: 3;
+}
+
+input:checked + .slider {
+  background-color: #0a7208bd;
+}
+
+input:focus-visible + .slider {
+  outline: solid 1px var(--lightness-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(4rem);
 }
 
 .img-credit {

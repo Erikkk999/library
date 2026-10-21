@@ -24,6 +24,10 @@ function addBookToLibrary(author, title, pages) {
   displayBook();
 }
 
+Book.prototype.setReadStatus = function (status) {
+  this.read = status;
+};
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -39,13 +43,19 @@ form.addEventListener("submit", (e) => {
   dialog.close();
 });
 
-function displayBook() {
-  container.replaceChildren();
+container.addEventListener("change", (e) => {
+  const checkBox = e.target;
 
-  myLibrary.forEach(item => {
-    container.appendChild(createBookElement(item));
-  });
-}
+  if (!checkBox.matches(".read-status")) return;
+
+  const book = checkBox.closest(".book");
+  const item = myLibrary.find(item => item.id === book.dataset.id);
+  const switchText = book.querySelector(".switch-text");
+
+  if (!item) return;
+
+  changeReadStatus(item, switchText, checkBox);
+});
 
 function createBookElement(item) {
   const book = document.createElement("div");
@@ -80,14 +90,23 @@ function createBookElement(item) {
 
   const checkBox = document.createElement("input");
   checkBox.type = "checkbox";
-  checkBox.id = `read-status: ${item.id}`;
+  checkBox.classList.add("read-status");
+  checkBox.id = `read-status-${item.id}`;
   checkBox.checked = item.read;
 
   const checkBoxLabel = document.createElement("label");
   checkBoxLabel.classList.add("switch");
   checkBoxLabel.htmlFor = checkBox.id;
 
-  checkBoxLabel.append(checkBox);
+  const slider = document.createElement("span");
+  slider.classList.add("slider");
+
+  const switchText = document.createElement("span");
+  switchText.classList.add("switch-text", item.read ? "text-on" : "text-off");
+  switchText.textContent = item.read ? "Read" : "Not read";
+
+  slider.appendChild(switchText);
+  checkBoxLabel.append(checkBox, slider);
   bookAuthor.append(labelForAuthor);
   bookPages.append(labelForPages);
   bookAuthor.append(item.author);
@@ -100,3 +119,30 @@ function createBookElement(item) {
 
   return book;
 }
+
+function displayBook() {
+  container.replaceChildren();
+
+  myLibrary.forEach(item => {
+    container.appendChild(createBookElement(item));
+  });
+}
+
+function changeReadStatus(item, switchText, checkBox) {
+  switchText.classList.add("fade-out");
+
+  timeout = setTimeout(() => {
+    item.setReadStatus(checkBox.checked);
+
+    switchText.textContent = checkBox.checked ? "Read" : "Not read";
+
+    switchText.classList.toggle("text-on", checkBox.checked);
+    switchText.classList.toggle("text-off", !checkBox.checked);
+
+    timeout = setTimeout(() => {
+    switchText.classList.remove("fade-out");
+    }, 700);
+  }, 300);
+}
+
+addBookToLibrary("V. Anton Spraul", "Think Like A Programmer", "256");
