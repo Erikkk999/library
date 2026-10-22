@@ -11,6 +11,7 @@ body {
   isolation: isolate;
 
   font-family:
+    "Apple Garamond",
     system-ui,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -18,7 +19,7 @@ body {
     'Open Sans',
     sans-serif;
 
-  line-height: 1.5;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -61,12 +62,42 @@ button {
 }
 
 :root {
-  --main-color: #004f99c3;
+  --main-color: #004f99;
+  --main-faded-color: #004f99c3;
   --secondary-color: #ffd900;
+  --secondary-faded-color: #ffd9009c;
   --dark-transparent-color: #00000080;
   --darkness-color: #000000;
   --lightness-color: #ffffff;
+  --invalid-color: #a10000;
   --transparent-color: transparent;
+}
+
+@font-face {
+  font-family: "Alice in Wonderland";
+  src: url("font/AliceinWonderland.woff2") format("woff2"),
+       url("font/AliceinWonderland.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple Garamond";
+  src: url("font/AppleGaramond-Bold.woff2") format("woff2"),
+       url("font/AppleGaramond-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple Garamond";
+  src: url("font/AppleGaramond.woff2") format("woff2"),
+       url("font/AppleGaramond.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 .page {
@@ -91,7 +122,7 @@ button {
     linear-gradient(
       to left,
       var(--dark-transparent-color),
-      var(--main-color) 40%
+      var(--main-faded-color) 40%
     );
 
   padding: 0 1rem;
@@ -103,22 +134,30 @@ button {
   color: var(--secondary-color);
   background-color: #00000010;
 
-  text-shadow: 0 0 10px var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-faded-color);
   box-shadow: 0 5px 15px var(--dark-transparent-color);
 
+  font-family: "Alice in Wonderland", sans-serif;
+  font-size: calc(1.1rem + 2.5vw);
+  line-height: 0.6;
+
   backdrop-filter: blur(0.8rem);
-  transform: translateY(-1.5rem);
 
   padding: 0 1rem;
+
+  transform: translateY(-1.6rem);
 }
 
 .page-header > button {
   grid-column: 3;
   justify-self: end;
+
+  width: clamp(2rem, calc(2rem + 1.3vw), 3.5rem);
+  aspect-ratio: 1;
 }
 
 .page button {
-  --button-translate-y: -1.5rem;
+  --button-translate-y: -1.6rem;
 
   display: grid;
   place-items: center;
@@ -126,13 +165,10 @@ button {
   border: none;
   border-radius: 50%;
 
-  width: 3rem;
-  height: 3rem;
-
   padding: 0.1rem;
 
   background-color: var(--secondary-color);
-  box-shadow: 0 0 10px var(--secondary-color),
+  box-shadow: 0 0 10px var(--secondary-faded-color),
     0 0 3px var(--darkness-color) inset;
 
   transform: translateY(var(--button-translate-y));
@@ -141,7 +177,7 @@ button {
 }
 
 .page button:hover {
-  box-shadow: 0 0 14px var(--secondary-color),
+  box-shadow: 0 0 14px var(--secondary-faded-color),
     0 0 3px var(--darkness-color) inset;
 
   transform: translateY(var(--button-translate-y))
@@ -149,15 +185,15 @@ button {
 }
 
 .page button:focus-visible {
-  outline: 2px solid var(--lightness-color);
-  outline-offset: 2px;
+  outline: 1px solid var(--lightness-color);
+  outline-offset: 1px;
 
   transform: translateY(var(--button-translate-y))
     scale(1.1) rotate(180deg);
 }
 
 .page button:active {
-  box-shadow: 0 0 10px var(--secondary-color),
+  box-shadow: 0 0 10px var(--secondary-faded-color),
    0 0 3px var(--darkness-color) inset;
 
   transform: translateY(var(--button-translate-y)) scale(1);
@@ -165,8 +201,8 @@ button {
 
 .page dialog,
 .book {
-  width: min(27rem, calc(100% - 1rem));
-  height: 36rem;
+  width: clamp(19rem, calc(18rem + 10vw), 35rem);
+  height: clamp(32rem, calc(32rem + 10vh), 45rem);
 
   border: none;
   border-radius: 2rem;
@@ -175,11 +211,11 @@ button {
   background-color: var(--transparent-color);
   backdrop-filter: blur(0.1rem);
 
-  box-shadow: 0 0 30px var(--main-color) inset,
-    0 0 30px #004f99;
+  box-shadow: 0 0 30px var(--main-faded-color) inset,
+    0 0 30px var(--main-color);
 
   padding: 1.5rem;
-  margin: 20vh auto;
+  margin: 18vh auto;
 
   transition: transform 1s ease,
     background-color 1s ease,
@@ -190,19 +226,14 @@ button {
 
 .page dialog:hover,
 .book:hover {
-  background-color: #00000060;
+  background-color: #00000030;
   backdrop-filter: blur(0.4rem);
 
   outline: solid 1px #ffffff20;
-  box-shadow: 0 0 20px var(--main-color) inset,
-    0 0 50px 5px #004f99;
+  box-shadow: 0 0 20px var(--main-faded-color) inset,
+    0 0 50px 5px var(--main-color);
 
   transform: scale(1.01);
-  transition: transform 1s ease,
-    background-color 1s ease,
-    backdrop-filter 1s ease,
-    box-shadow 1s ease,
-    outline 1s ease;
 }
 
 .page dialog::backdrop {
@@ -222,8 +253,8 @@ button {
 .book button {
   --button-translate-y: 0;
 
-  width: 2rem;
-  height: 2rem;
+  width: clamp(2rem, calc(1rem + 1.3vw), 2.5rem);
+  aspect-ratio: 1;
 }
 
 .dialog-content button:first-child img,
@@ -253,9 +284,9 @@ button {
 
 .dialog-heading h2 {
   color: var(--secondary-color);
-  text-shadow: 0 0 10px var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-faded-color);
 
-  font-size: 1.7rem;
+  font-size: calc(1.3rem + 0.5vw);
 }
 
 .dialog-content form {
@@ -290,7 +321,7 @@ button {
   border-radius: 0.3rem;
 
   color: var(--secondary-color);
-  text-shadow: 0 0 10px var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-faded-color);
   font-size: 1.4rem;
 
   transform: translateY(-4.4rem) translateX(-0.4rem);
@@ -317,15 +348,15 @@ button {
 .dialog-content form input:focus {
   outline: solid 1px var(--secondary-color);
   box-shadow: 0 0 14px var(--darkness-color),
-    0 0 12px var(--secondary-color) inset;
+    0 0 12px var(--secondary-faded-color) inset;
 
   background-color: var(--darkness-color);
 }
 
 .dialog-content form input:user-invalid {
-  outline: solid 1px red;
+  outline: solid 1px var(--invalid-color);
   box-shadow: 0 0 14px var(--darkness-color),
-    0 0 12px red inset;
+    0 0 12px var(--invalid-color) inset;
 }
 
 .dialog-content form input[type="number"]::-webkit-inner-spin-button,
@@ -344,6 +375,8 @@ button {
   flex-wrap: wrap;
   gap: 2rem;
 
+  letter-spacing: 0.04rem;
+
   padding: 2rem;
   margin-top: 3rem;
 }
@@ -354,7 +387,7 @@ button {
   place-content: space-between;
 
   width: fit-content;
-  height: 20rem;
+  height: clamp(15rem, calc(14rem + 7vw), 25rem);
 
   margin: 0;
 
@@ -367,7 +400,7 @@ button {
 }
 
 .book-header h3 {
-  font-size: 2rem;
+  font-size: calc(0.8rem + 1.3vw);
   color: var(--secondary-color);
 
   transition: text-shadow 1s ease;
@@ -375,12 +408,12 @@ button {
 
 .book:hover h3,
 .book:hover .paragraph-container span {
-  text-shadow: 0 0 10px var(--secondary-color);
+  text-shadow: 0 0 4px var(--secondary-faded-color);
   transition: text-shadow 1s ease;
 }
 
 .paragraph-container p {
-  font-size: 1.6rem;
+  font-size: calc(0.6rem + 1vw);
   color: var(--lightness-color);
 }
 
@@ -419,7 +452,7 @@ button {
   position: absolute;
   top: 50%;
 
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold;
 
   color: white;
