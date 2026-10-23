@@ -24,7 +24,7 @@ function addBookToLibrary(author, title, pages) {
   displayBook();
 }
 
-Book.prototype.setReadStatus = function (status) {
+Book.prototype.setReadStatus = function(status) {
   this.read = status;
 };
 
@@ -32,7 +32,6 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const formData = new FormData(form);
-  
   const author = formData.get("author");
   const title = formData.get("title");
   const pages = formData.get("pages");
@@ -45,33 +44,33 @@ form.addEventListener("submit", (e) => {
 
 container.addEventListener("change", (e) => {
   const checkBox = e.target;
-
   if (!checkBox.matches(".read-status")) return;
 
-  const book = checkBox.closest(".book");
-  if (!book) return;
+  const bookElement = checkBox.closest(".book");
+  if (!bookElement) return;
 
-  const item = myLibrary.find(item => item.id === book.dataset.id);
-  const switchText = book.querySelector(".switch-text");
+  const bookData = myLibrary.find(book => book.id === bookElement.dataset.id);
+  if (!bookData) return;
 
-  changeReadStatus(item, switchText, checkBox);
+  const switchText = bookElement.querySelector(".switch-text");
+
+  changeReadStatus(bookData, switchText, checkBox);
 });
 
 container.addEventListener("click", (e) => {
   const removeBtn = e.target.closest(".remove-btn");
-
   if (!removeBtn) return;
 
-  const book = removeBtn.closest(".book");
-  if (!book) return;
+  const bookElement = removeBtn.closest(".book");
+  if (!bookElement) return;
 
-  removeBookFromLibrary(book.dataset.id);
+  removeBookFromLibrary(bookElement.dataset.id);
 });
 
-function createBookElement(item) {
-  const book = document.createElement("div");
-  book.classList.add("book");
-  book.dataset.id = item.id;
+function createBookElement(book) {
+  const bookElement = document.createElement("div");
+  bookElement.classList.add("book");
+  bookElement.dataset.id = book.id;
 
   const removeBtn = document.createElement("button");
   removeBtn.type = "button";
@@ -89,7 +88,7 @@ function createBookElement(item) {
   paraCont.classList.add("paragraph-container");
 
   const bookTitle = document.createElement("h3");
-  bookTitle.textContent = item.title;
+  bookTitle.textContent = book.title;
 
   const bookAuthor = document.createElement("p");
   const bookPages = document.createElement("p");
@@ -103,8 +102,8 @@ function createBookElement(item) {
   const checkBox = document.createElement("input");
   checkBox.type = "checkbox";
   checkBox.classList.add("read-status");
-  checkBox.id = `read-status-${item.id}`;
-  checkBox.checked = item.read;
+  checkBox.id = `read-status-${book.id}`;
+  checkBox.checked = book.read;
 
   const checkBoxLabel = document.createElement("label");
   checkBoxLabel.classList.add("switch");
@@ -114,40 +113,37 @@ function createBookElement(item) {
   slider.classList.add("slider");
 
   const switchText = document.createElement("span");
-  switchText.classList.add("switch-text", item.read ? "text-on" : "text-off");
-  switchText.textContent = item.read ? "Read" : "Not read";
+  switchText.classList.add("switch-text", book.read ? "text-on" : "text-off");
+  switchText.textContent = book.read ? "Read" : "Not read";
 
   slider.appendChild(switchText);
   checkBoxLabel.append(checkBox, slider);
-  bookAuthor.append(labelForAuthor);
-  bookPages.append(labelForPages);
-  bookAuthor.append(item.author);
-  bookPages.append(item.pages);
+  bookAuthor.append(labelForAuthor, book.author);
+  bookPages.append(labelForPages, book.pages);
   removeBtn.append(image);
   paraCont.append(bookAuthor, bookPages);
   bookHeader.append(bookTitle);
 
-  book.append(removeBtn, bookHeader, paraCont, checkBoxLabel);
+  bookElement.append(removeBtn, bookHeader, paraCont, checkBoxLabel);
 
-  return book;
+  return bookElement;
 }
 
 function displayBook() {
   container.replaceChildren();
 
-  myLibrary.forEach(item => {
-    container.appendChild(createBookElement(item));
+  myLibrary.forEach(book => {
+    container.appendChild(createBookElement(book));
   });
 }
 
-function changeReadStatus(item, switchText, checkBox) {
+function changeReadStatus(book, switchText, checkBox) {
   switchText.classList.add("fade-out");
 
   setTimeout(() => {
-    item.setReadStatus(checkBox.checked);
+    book.setReadStatus(checkBox.checked);
 
     switchText.textContent = checkBox.checked ? "Read" : "Not read";
-
     switchText.classList.toggle("text-on", checkBox.checked);
     switchText.classList.toggle("text-off", !checkBox.checked);
 
@@ -159,10 +155,10 @@ function changeReadStatus(item, switchText, checkBox) {
 
 function removeBookFromLibrary(id) {
   const index = myLibrary.findIndex(book => book.id === id);
-
   if (index === -1) return;
 
   myLibrary.splice(index, 1);
+
   displayBook();
 }
 
